@@ -1,0 +1,9 @@
+requests
+beautifulsoup4
+selenium
+playwright
+pandas
+newspaper3k
+gdeltdoc
+lxml_html_clean
+openpyxl
