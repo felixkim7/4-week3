@@ -12,44 +12,39 @@ page.pause()
 #######         코드를 작성해주세요           #######
 ##################################################
 
-###--------------------------------------------------### url로 이동
 
-# 국내증시 클릭
-page.get_by_role("link", name="국내증시").click()
+# 해외증시 클릭
+page.get_by_role("link", name="해외증시").click()
 
-# 시가총액 클릭
-page.get_by_role("link", name="시가총액").first.click()
 
-###--------------------------------------------------### 국내증시, 시가총액 클릭
-
-# 시가총액 table 선택
-table = page.locator("table", has_text="코스피")
+# 해외 주요지수 table 선택
+table = page.locator("table", has_text="해외 주요지수")
 
 # column name 추출
 columns = table.locator("thead th").all_inner_texts()
 
 # 첫 번째 데이터 행 추출
-first_row = table.locator("tbody tr").filter(has=page.locator("td")).first
+first_row = table.locator("thead tr").nth(1)
 first_data = first_row.locator("td").all_inner_texts()
 
 print("컬럼명:", columns)
 print("첫 번째 데이터:", first_data)
 
-###--------------------------------------------------### 시가총액 table에서 column name과 첫번째 데이터 추출 print
 
-# header, body 정리
+# 테이블 정리
 tag_table = table
 tag_header = tag_table.locator("thead th").all_inner_texts()
 
-# tbody 안의 실제 데이터 행만 추출
-rows = tag_table.locator("tbody tr").filter(has=page.locator("td")).all()
+
+all_rows = tag_table.locator("thead tr").all()
+rows = all_rows[1:]
 
 tag_body = []
 for row in rows:
     row_data = row.locator("td").all_inner_texts()
     tag_body.append(row_data)
 
-###--------------------------------------------------### tag_table,tag_header,tag_body로 정리
+
 
 # 반복문으로 출력
 print("\n[헤더]")
@@ -60,24 +55,21 @@ print("\n[바디]")
 for row in tag_body:
     print(row)
 
-###--------------------------------------------------### 반복문으로 출력
-print("done1")
+
+
 # json 출력
 import json
-print("done2")
+
 dumped = json.dumps(
     {"header": tag_header, "body": tag_body},
     indent=2,
     ensure_ascii=False
 )
-print("done3")
-with open("page_1.json", "w", encoding="utf-8") as fp:
+with open("page_2.json", "w", encoding="utf-8") as fp:
     fp.write(dumped)
-print("done4")
-###--------------------------------------------------### json출력
 
-print("done5")
+
+
 browser.close()
-print("done6")
+
 play.stop()
-print("done7")
